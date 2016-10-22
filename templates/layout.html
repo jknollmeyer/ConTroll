@@ -10,9 +10,9 @@
 <ul class=navigation>
   <li><a href="{{ url_for('index') }}">overview</a></li>
   {% if g.user %}
-  <li><a href="{{ url_for('logout') }}">sign out [{{ g.user.screen_name}}]</a></li>
+  <li><a href="{{ url_for('twitter_auth.logout') }}">sign out [{{ g.user.screen_name}}]</a></li>
   {% else %}
-  <li><a href="{{ url_for('login') }}">sign in</a></li>
+  <li><a href="{{ url_for('twitter_auth.login') }}">sign in</a></li>
   {% endif %}
 </ul>
 {% for message in get_flashed_messages() %}

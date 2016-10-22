@@ -1,42 +1,29 @@
 from flask import Flask
-from flask import g, session, request, url_for, flash
+from flask import session, request, url_for, flash, g, session
 from flask import redirect, render_template
-import keys
-from flask_oauthlib.client import OAuth
+
+import twitter_auth
+from twitter_auth import twitterBlueprint, twitter
+import random
 
 app = Flask(__name__)
 app.debug = True
 app.secret_key = 'development'
+app.register_blueprint(twitterBlueprint)
 
-oauth = OAuth(app)
+blocks = dict()
 
-def getTroll(tweet):
-    if 'g' in tweet['text']:
-        return False
-    else:
+def getTroll(inTweet):
+    if inTweet['user']['screen_name'] == 'controllapphh':
         return True
-twitter = oauth.remote_app(
-    'twitter',
-    consumer_key=keys.CONSUMER_KEY,
-    consumer_secret=keys.CONSUMER_SECRET,
-    base_url="https://api.twitter.com/1.1/",
-    request_token_url='https://api.twitter.com/oauth/request_token',
-    access_token_url='https://api.twitter.com/oauth/access_token',
-    authorize_url='https://api.twitter.com/oauth/authenticate',
-)
-
-@twitter.tokengetter
-def get_twitter_token():
-    if 'twitter_oauth' in session:
-        resp = session['twitter_oauth']
-        return resp['oauth_token'], resp['oauth_token_secret']
+    else:
+        return False
 
 @app.before_request
 def before_request():
     g.user = None
     if 'twitter_oauth' in session:
         g.user = session['twitter_oauth']
-
 
 @app.route('/')
 def index():
@@ -49,7 +36,7 @@ def index():
                 tweet['troll'] = getTroll(tweet)
         else:
             flash('Unable to load tweets from Twitter.')
-    return render_template('index.html', tweets=tweets)
+    return render_template('index.html', tweets=tweets, blocks=blocks)
 
 
 @app.route('/tweet', methods=['POST'])
@@ -74,29 +61,25 @@ def tweet():
         flash('Successfully tweeted your tweet (ID: #%s)' % resp.data['id'])
     return redirect(url_for('index'))
 
+@app.route('/block', methods=['GET'])
+def block():
+    mentionsResp = twitter.request('statuses/mentions_timeline.json')
 
-@app.route('/login')
-def login():
-    callback_url = url_for('oauthorized', next=request.args.get('next'))
-    return twitter.authorize(callback=callback_url or request.referrer or None)
+    if mentionsResp.status == 200:
+        tweets = mentionsResp.data
 
+        for t in tweets:
+            if getTroll(t) and t['user']['screen_name'] not in blocks.keys():
+                screen_name= t['user']['screen_name']
+                resp = twitter.post('blocks/create.json',data={
+                    'screen_name': screen_name
+                })
+                if g.user['user_id'] not in blocks.keys():
+                    blocks[g.user['user_id']] = [screen_name]
+                elif screen_name not in blocks[g.user['user_id']]:
+                    blocks[g.user['user_id']].append(screen_name)
 
-@app.route('/logout')
-def logout():
-    session.pop('twitter_oauth', None)
     return redirect(url_for('index'))
-
-
-@app.route('/oauthorized')
-def oauthorized():
-    resp = twitter.authorized_response()
-    if resp is None:
-        flash('You denied the request to sign in.')
-    else:
-        session['twitter_oauth'] = resp
-    return redirect(url_for('index'))
-
-
 
 if __name__ == '__main__':
     app.run()
