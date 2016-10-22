@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 Sentiment Analysis using the Microsoft GetSentiment single response API
 """
