@@ -10,11 +10,16 @@ app.secret_key = 'development'
 
 oauth = OAuth(app)
 
+def getTroll(tweet):
+    if 'g' in tweet['text']:
+        return False
+    else:
+        return True
 twitter = oauth.remote_app(
     'twitter',
     consumer_key=keys.CONSUMER_KEY,
     consumer_secret=keys.CONSUMER_SECRET,
-    base_url="https://api.twitter.com/1.1",
+    base_url="https://api.twitter.com/1.1/",
     request_token_url='https://api.twitter.com/oauth/request_token',
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authenticate',
@@ -37,9 +42,11 @@ def before_request():
 def index():
     tweets = None
     if g.user is not None:
-        resp = twitter.request('statuses/home_timeline.json')
+        resp = twitter.request('statuses/mentions_timeline.json')
         if resp.status == 200:
             tweets = resp.data
+            for tweet in tweets:
+                tweet['troll'] = getTroll(tweet)
         else:
             flash('Unable to load tweets from Twitter.')
     return render_template('index.html', tweets=tweets)
