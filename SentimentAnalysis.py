@@ -8,6 +8,8 @@ import requests as r
 import urllib2 as u
 import json as j
 
+#Returns a value between 0 and 1. 0 is a wholly negative string, 
+#and 1 is a wholly positive string
 def getSentiment(s):
     """ Gets the sentiment of a string and returns the score."""
     headers = {"Ocp-Apim-Subscription-Key" : "4c28d3a67a12442cad6666a3200c49f5",
