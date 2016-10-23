@@ -1,23 +1,62 @@
 <!doctype html>
 <html>
 <head>
-<title>{% block title %}Welcome{% endblock %} | Flask OAuth Example</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static',
-  filename='style.css') }}">
+	<title>{% block title %}ConTroll{% endblock %}</title>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+	<link rel=stylesheet type=text/css href="{{ url_for('static',
+	filename='style.css') }}">
 </head>
 <body>
-<h1>Flask OAuth Example</h1>
-<ul class=navigation>
-  <li><a href="{{ url_for('index') }}">overview</a></li>
-  {% if g.user %}
-  <li><a href="{{ url_for('twitter_auth.logout') }}">sign out [{{ g.user.screen_name}}]</a></li>
-  {% else %}
-  <li><a href="{{ url_for('twitter_auth.login') }}">sign in</a></li>
-  {% endif %}
-</ul>
-{% for message in get_flashed_messages() %}
-  <p class=message>{{ message }}</p>
-{% endfor %}
-{% block body %}{% endblock %}
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+	  <header class="mdl-layout__header">
+	    <div class="mdl-layout__header-row">
+	      <!-- Title -->
+	      <span class="mdl-layout-title">ConTroll</span>
+	      <!-- Add spacer, to align navigation to the right -->
+	      <div class="mdl-layout-spacer"></div>
+	      <!-- Navigation. We hide it in small screens. -->
+	      <nav class="mdl-navigation mdl-layout--large-screen-only">
+	        <a class="mdl-navigation__link" href="{{ url_for('index') }}">Overview</a>
+	        {% if g.user %}
+			<a class="mdl-navigation__link" href="{{ url_for('twitter_auth.logout') }}">Sign Out</a>
+			{% else %}
+			<a class="mdl-navigation__link" href="{{ url_for('twitter_auth.login') }}">Sign In</a>
+			{% endif %}
+	      </nav>
+	    </div>
+	  </header>
+	  <div class="mdl-layout__drawer">
+	    <span class="mdl-layout-title">Settings</span>
+	    <nav class="mdl-navigation">
+	      <a class="mdl-navigation__link" href="">Link</a>
+	    </nav>
+	  </div>
+	  <main class="mdl-layout__content">
+	    <div class="page-content">
+			<div class="mdl-grid">
+			  <div class="mdl-cell mdl-cell--12-col">{% block body %}{% endblock %}</div>
+			</div>
+	    </div>
+	  </main>
+	</div>
+	<div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+	  <div class="mdl-snackbar__text"></div>
+	  <button class="mdl-snackbar__action" type="button"></button>
+	</div>
+	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	<script>
+		r(function(){
+		    var snackbarContainer = document.querySelector('#snackbar');
+			{% for message in get_flashed_messages() %}
+				var data = {
+				  message: '{{ message }}',
+				  timeout: 3000
+				};
+				snackbarContainer.MaterialSnackbar.showSnackbar(data);
+			{% endfor %}
+		});
+		function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}
+	</script>
 </body>
 </html>

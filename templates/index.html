@@ -3,13 +3,16 @@
   <h2>Overview</h2>
   {% if g.user %}
     <p>
-      Hello {{ g.user.screen_name }}!  Wanna tweet something?
+      Hello @{{ g.user.screen_name }}!  Wanna tweet something?
     </p>
     <form action="{{ url_for('tweet') }}"  method=post>
-      <p>
-        <input type=text name=tweet size=40>
-        <input type=submit value="Tweet!">
-      </p>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input class="mdl-textfield__input" type="text" name="tweet" id="tweet-input">
+        <label class="mdl-textfield__label" for="tweet-input">Enter your message...</label>
+      </div>
+      <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+        Tweet!
+      </button>
     </form>
     {% if tweets %}
     <h3>Your Timeline</h3>
