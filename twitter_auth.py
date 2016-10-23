@@ -1,4 +1,4 @@
-from flask import Flask
+# module for setting up authentication with Twitter
 from flask import g, session, request, url_for, flash
 from flask import redirect, Blueprint
 
