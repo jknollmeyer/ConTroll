@@ -1,16 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
-  <h2>Overview</h2>
   {% if g.user %}
-    <p>
-      Hello {{ g.user.screen_name }}!  Wanna tweet something?
-    </p>
-    <form action="{{ url_for('tweet') }}"  method=post>
-      <p>
-        <input type=text name=tweet size=40>
-        <input type=submit value="Tweet!">
-      </p>
-    </form>
+  <script>
+    document.querySelector("#loading").style.display = "none";
+  </script>
     {% if tweets %}
     <h3>Your Timeline</h3>
     <ul>
@@ -22,15 +15,67 @@
         }}">{{ tweet.user.screen_name }}</a>: {{ tweet.text|urlize }}</li>
     {% endfor %}
     </ul>
+
+    <button onclick="location.href+='block';" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      Block Out the Haters!
+    </button>
+
+    <button onclick="location.href+='clear';" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      Unblock the Haters!
+    </button>
     {% endif %}
   {% else %}
+    <h1>Welcome to ConTroll</h1>
     <p>
-      Sign in to view your public timeline and to tweet from this
-      example application.
+      With ConTroll, blocking offensive Twitter users has never been easier! Using Microsoft Azure Machine Learning Sentiment Analysis (MAMLSA, or as I prefer, Madame Lisa), ConTroll is able to analyze every tweet in which you are mentioned and determine whether or not you have been the target of an offensive message. ConTroll compiles a list of all authors of those offensive tweets, and with one click you can block them instantly! What are you waiting for? Make Twitter Friendly Again!
     </p>
-    <p>
-      <a href="{{ url_for('login') }}"><img src="{{
-        url_for('static', filename='sign-in.png') }}" alt="sign in"></a>
-    </p>
+    <a href="{{ url_for('login') }}">
+      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Sign In
+      </button>
+    </a>
+    <script>
+    r(function(){
+      var redBird = document.createElement("img");
+        redBird.className = "bird";
+        redBird.src = "{{ url_for('static', filename='img/red_bird.png') }}";
+        redBird.style.width = Math.round(Math.random() * (200 - 50) + 50) + "px";
+        redBird.style.top = "50vh";
+        redBird.style.right = "-100vw";
+        redBird.style.transition = "transform 5s";
+        document.body.appendChild(redBird);
+
+      var blueBirdArray = [];
+
+      for (var i = 0; i < 50; i++) {
+        var bird = document.createElement("img");
+        bird.className = "bird";
+        bird.src = "{{ url_for('static', filename='img/blue_bird.png') }}";
+        bird.style.width = Math.round(Math.random() * (200 - 50) + 50) + "px";
+        bird.style.top = Math.round(Math.random() * 100) + "vh";
+        bird.style.right = -1 * Math.round(Math.random() * (150 - 101) + 101) + "vw";
+        bird.style.transition = "transform " + (Math.round(Math.random() * (7 - 3) + 3)) + "s";
+        blueBirdArray.push(bird);
+        document.body.appendChild(bird);
+      }
+      setTimeout(function(){
+        for (var i = 0; i < blueBirdArray.length; i++) {
+            var bird = blueBirdArray[i];
+            bird.className += " move";
+        }
+        redBird.className += " move2";
+        setTimeout(function(){
+          redBird.className += " move3";
+        }, 5000);
+        setTimeout(function(){
+          document.querySelector("#loading").style.opacity = 0.0;
+          setTimeout(function(){
+            document.querySelector("#loading").style.display = "none";
+          }, 500);
+        }, 7000);
+      }, 500);
+    });
+    function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}
+  </script>
   {% endif %}
 {% endblock %}
