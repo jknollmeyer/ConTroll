@@ -1,6 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
   {% if g.user %}
+  <script>
+    document.querySelector("#loading").style.display = "none";
+  </script>
     <!--p>
       Hello @{{ g.user.screen_name }}!  Wanna tweet something?
     </p>
@@ -48,5 +51,48 @@
         Sign In
       </button>
     </a>
+    <script>
+    r(function(){
+      var redBird = document.createElement("img");
+        redBird.className = "bird";
+        redBird.src = "{{ url_for('static', filename='img/red_bird.png') }}";
+        redBird.style.width = Math.round(Math.random() * (200 - 50) + 50) + "px";
+        redBird.style.top = "50vh";
+        redBird.style.right = "-100vw";
+        redBird.style.transition = "transform 5s";
+        document.body.appendChild(redBird);
+
+      var blueBirdArray = [];
+
+      for (var i = 0; i < 50; i++) {
+        var bird = document.createElement("img");
+        bird.className = "bird";
+        bird.src = "{{ url_for('static', filename='img/blue_bird.png') }}";
+        bird.style.width = Math.round(Math.random() * (200 - 50) + 50) + "px";
+        bird.style.top = Math.round(Math.random() * 100) + "vh";
+        bird.style.right = -1 * Math.round(Math.random() * (150 - 101) + 101) + "vw";
+        bird.style.transition = "transform " + (Math.round(Math.random() * (7 - 3) + 3)) + "s";
+        blueBirdArray.push(bird);
+        document.body.appendChild(bird);
+      }
+      setTimeout(function(){
+        for (var i = 0; i < blueBirdArray.length; i++) {
+            var bird = blueBirdArray[i];
+            bird.className += " move";
+        }
+        redBird.className += " move2";
+        setTimeout(function(){
+          redBird.className += " move3";
+        }, 5000);
+        setTimeout(function(){
+          document.querySelector("#loading").style.opacity = 0.0;
+          setTimeout(function(){
+            document.querySelector("#loading").style.display = "none";
+          }, 500);
+        }, 7000);
+      }, 500);
+    });
+    function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}
+  </script>
   {% endif %}
 {% endblock %}

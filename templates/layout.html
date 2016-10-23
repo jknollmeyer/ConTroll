@@ -27,6 +27,7 @@
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+	<div id="loading"></div>
 	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 	  <header class="mdl-layout__header">
 	    <div class="mdl-layout__header-row">
@@ -48,7 +49,9 @@
 	  <div class="mdl-layout__drawer">
 	    <span class="mdl-layout-title">Settings</span>
 	    <nav class="mdl-navigation">
-	      <a class="mdl-navigation__link" href="">Link</a>
+	      <a class="mdl-navigation__link" href="">Sensitivity Threshold</a>
+	      <a class="mdl-navigation__link" href="">Whitelist Followed</a>
+	      <a class="mdl-navigation__link" href="">Phrase Blacklist</a>
 	    </nav>
 	  </div>
 	  <main class="mdl-layout__content">
