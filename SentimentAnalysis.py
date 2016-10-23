@@ -22,3 +22,4 @@ def getSentiment(s):
     sentiment = r.post(url, headers = headers, json = json)
     sentiment = j.loads(sentiment.text)
     return sentiment['documents'][0]['score']
+
