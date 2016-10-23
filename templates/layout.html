@@ -1,23 +1,84 @@
 <!doctype html>
 <html>
 <head>
-<title>{% block title %}Welcome{% endblock %} | Flask OAuth Example</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static',
-  filename='style.css') }}">
+	<title>{% block title %}ConTroll{% endblock %}</title>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='fav/favicon.ico') }}">
+	<link rel="icon" sizes="16x16 32x32 64x64" href="{{ url_for('static', filename='fav/favicon.ico') }}">
+	<link rel="icon" type="image/png" sizes="196x196" href="{{ url_for('static', filename='fav/favicon-192.png') }}">
+	<link rel="icon" type="image/png" sizes="160x160" href="{{ url_for('static', filename='fav/favicon-160.png') }}">
+	<link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='fav/favicon-96.png') }}">
+	<link rel="icon" type="image/png" sizes="64x64" href="{{ url_for('static', filename='fav/favicon-64.png') }}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='fav/favicon-32.png') }}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='fav/favicon-16.png') }}">
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='fav/favicon-57.png') }}">
+	<link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='fav/favicon-114.png') }}">
+	<link rel="apple-touch-icon" sizes="72x72" href="{{ url_for('static', filename='fav/favicon-72.png') }}">
+	<link rel="apple-touch-icon" sizes="144x144" href="{{ url_for('static', filename='fav/favicon-144.png') }}">
+	<link rel="apple-touch-icon" sizes="60x60" href="{{ url_for('static', filename='fav/favicon-60.png') }}">
+	<link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='fav/favicon-120.png') }}">
+	<link rel="apple-touch-icon" sizes="76x76" href="{{ url_for('static', filename='fav/favicon-76.png') }}">
+	<link rel="apple-touch-icon" sizes="152x152" href="{{ url_for('static', filename='fav/favicon-152.png') }}">
+	<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='fav/favicon-180.png') }}">
+	<meta name="msapplication-TileColor" content="#FFFFFF">
+	<meta name="msapplication-TileImage" content="{{ url_for('static', filename='fav/favicon-144.png') }}">
+	<meta name="msapplication-config" content="{{ url_for('static', filename='fav/browserconfig.xml') }}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<h1>Flask OAuth Example</h1>
-<ul class=navigation>
-  <li><a href="{{ url_for('index') }}">overview</a></li>
-  {% if g.user %}
-  <li><a href="{{ url_for('logout') }}">sign out [{{ g.user.screen_name}}]</a></li>
-  {% else %}
-  <li><a href="{{ url_for('login') }}">sign in</a></li>
-  {% endif %}
-</ul>
-{% for message in get_flashed_messages() %}
-  <p class=message>{{ message }}</p>
-{% endfor %}
-{% block body %}{% endblock %}
+	<div id="loading"></div>
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+	  <header class="mdl-layout__header">
+	    <div class="mdl-layout__header-row">
+	      <!-- Title -->
+	      <span class="mdl-layout-title">ConTroll</span>
+	      <!-- Add spacer, to align navigation to the right -->
+	      <div class="mdl-layout-spacer"></div>
+	      <!-- Navigation. We hide it in small screens. -->
+	      <nav class="mdl-navigation mdl-layout--large-screen-only">
+	        <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
+	        {% if g.user %}
+			<a class="mdl-navigation__link" href="{{ url_for('twitter_auth.logout') }}">Sign Out</a>
+			{% else %}
+			<a class="mdl-navigation__link" href="{{ url_for('twitter_auth.login') }}">Sign In</a>
+			{% endif %}
+	      </nav>
+	    </div>
+	  </header>
+	  <div class="mdl-layout__drawer">
+	    <span class="mdl-layout-title">Settings</span>
+	    <nav class="mdl-navigation">
+	      <a class="mdl-navigation__link" href="">Sensitivity Threshold</a>
+	      <a class="mdl-navigation__link" href="">Whitelist Followed</a>
+	      <a class="mdl-navigation__link" href="">Phrase Blacklist</a>
+	    </nav>
+	  </div>
+	  <main class="mdl-layout__content">
+	    <div class="page-content">
+			<div class="mdl-grid">
+			  <div class="mdl-cell mdl-cell--12-col">{% block body %}{% endblock %}</div>
+			</div>
+	    </div>
+	  </main>
+	</div>
+	<div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+	  <div class="mdl-snackbar__text"></div>
+	  <button class="mdl-snackbar__action" type="button"></button>
+	</div>
+	<script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+	<script>
+		r(function(){
+		    var snackbarContainer = document.querySelector('#snackbar');
+			{% for message in get_flashed_messages() %}
+				var data = {
+				  message: '{{ message }}',
+				  timeout: 3000
+				};
+				snackbarContainer.MaterialSnackbar.showSnackbar(data);
+			{% endfor %}
+		});
+		function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}
+	</script>
 </body>
 </html>
