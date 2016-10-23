@@ -17,7 +17,7 @@
 	      <div class="mdl-layout-spacer"></div>
 	      <!-- Navigation. We hide it in small screens. -->
 	      <nav class="mdl-navigation mdl-layout--large-screen-only">
-	        <a class="mdl-navigation__link" href="{{ url_for('index') }}">Overview</a>
+	        <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
 	        {% if g.user %}
 			<a class="mdl-navigation__link" href="{{ url_for('twitter_auth.logout') }}">Sign Out</a>
 			{% else %}
