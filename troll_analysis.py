@@ -4,3 +4,5 @@
 
 def is_troll(tweetText):
     return True
+
+userBlacklist = ['controllapphh']
