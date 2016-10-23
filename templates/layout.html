@@ -27,6 +27,7 @@
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+	<div id="loading"></div>
 	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 	  <header class="mdl-layout__header">
 	    <div class="mdl-layout__header-row">
@@ -38,9 +39,9 @@
 	      <nav class="mdl-navigation mdl-layout--large-screen-only">
 	        <a class="mdl-navigation__link" href="{{ url_for('index') }}">Home</a>
 	        {% if g.user %}
-			<a class="mdl-navigation__link" href="{{ url_for('twitter_auth.logout') }}">Sign Out</a>
+			<a class="mdl-navigation__link" href="{{ url_for('logout') }}">Sign Out</a>
 			{% else %}
-			<a class="mdl-navigation__link" href="{{ url_for('twitter_auth.login') }}">Sign In</a>
+			<a class="mdl-navigation__link" href="{{ url_for('login') }}">Sign In</a>
 			{% endif %}
 	      </nav>
 	    </div>
@@ -48,7 +49,9 @@
 	  <div class="mdl-layout__drawer">
 	    <span class="mdl-layout-title">Settings</span>
 	    <nav class="mdl-navigation">
-	      <a class="mdl-navigation__link" href="">Link</a>
+	      <a class="mdl-navigation__link" href="">Sensitivity Threshold</a>
+	      <a class="mdl-navigation__link" href="">Whitelist Followed</a>
+	      <a class="mdl-navigation__link" href="">Phrase Blacklist</a>
 	    </nav>
 	  </div>
 	  <main class="mdl-layout__content">
