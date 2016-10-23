@@ -1,10 +1,8 @@
 from flask import Flask
 from flask import session, request, url_for, flash, g, session
 from flask import redirect, render_template
-
-import twitter_auth
 from twitter_auth import twitterBlueprint, twitter
-import random
+from troll_analysis import is_troll
 
 app = Flask(__name__)
 app.debug = True
@@ -15,7 +13,7 @@ blocks = dict()
 
 def getTroll(inTweet):
     if inTweet['user']['screen_name'] == 'controllapphh':
-        return True
+        return is_troll(inTweet['text'])
     else:
         return False
 
