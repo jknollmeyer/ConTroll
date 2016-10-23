@@ -17,6 +17,7 @@
     <input type="button"
            onclick="location.href+='block';"
            value="Block out the haters" />
+
     <h4>Your Haters:</h4>
     <ul>
         <li>The nonbelievers</li>
@@ -24,6 +25,10 @@
         <li>{{ hater }}</li>
         {% endfor %}
     </ul>
+
+    <input type="button"
+           onclick="location.href+='clear';"
+           value="Unblock the haters" />
 
     {% endif %}
   {% else %}
