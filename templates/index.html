@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 {% block body %}
-  <h2>Overview</h2>
   {% if g.user %}
     {% if tweets %}
     <h3>Your Timeline</h3>
@@ -14,9 +13,9 @@
     {% endfor %}
     </ul>
 
-    <input type="button"
-           onclick="location.href+='block';"
-           value="Block out the haters" />
+    <button onclick="location.href+='block';" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+      Block Out the Haters!
+    </button>
 
     <h4>Your Haters:</h4>
     <ul>
@@ -32,13 +31,14 @@
 
     {% endif %}
   {% else %}
+    <h1>Welcome to ConTroll</h1>
     <p>
-      Sign in to view your public timeline and to tweet from this
-      example application.
+      With ConTroll, blocking offensive Twitter users has never been easier! Using Microsoft Azure Machine Learning Sentiment Analysis (MAMLSA, or as I prefer, Madame Lisa), ConTroll is able to analyze every tweet in which you are mentioned and determine whether or not you have been the target of an offensive message. ConTroll compiles a list of all authors of those offensive tweets, and with one click you can block them instantly! What are you waiting for? Make Twitter Friendly Again!
     </p>
-    <p>
-      <a href="{{ url_for('twitter_auth.login') }}"><img src="{{
-        url_for('static', filename='sign-in.png') }}" alt="sign in"></a>
-    </p>
+    <a href="{{ url_for('twitter_auth.login') }}">
+      <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+        Sign In
+      </button>
+    </a>
   {% endif %}
 {% endblock %}
